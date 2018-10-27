@@ -27,13 +27,13 @@
         <div class="container">
             <div class="content-center">
                 <h1 class="title">Photography meets AI</h1>
-                <h5 class="description">Upload an image and let AI do it's magic</h5>
-                <form class="form" method="POST" action="/imageUpload" enctype="multipart/form-data">
+                <h5 class="description">Upload an image and get detailed insights</h5>
+                <form class="form" method="POST" action="/uploadImage" enctype="multipart/form-data">
                     <div class="fileinput fileinput-new" data-provides="fileinput">
                         <span class="btn btn-raised btn-round btn-primary btn-file">
                             <span class="fileinput-new">Select Image</span>
                             <span class="fileinput-exists">Change</span>
-                            <input type="hidden" name="image" accept=".jpg">
+                            <input type="hidden" id="image" name="image" accept=".jpg">
                             <input type="file" id="image" name="image" accept=".jpg">
                             <span class="fileinput-filename"></span>
                         </span>
