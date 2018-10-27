@@ -1,4 +1,4 @@
-import exifread, requests, json, os
+import exifread, requests, os
 from flask import Flask, request, render_template
 from werkzeug.utils import secure_filename
 from clarifai.rest import ClarifaiApp

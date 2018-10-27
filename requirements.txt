@@ -1,0 +1,6 @@
+exifread
+requests
+os
+flask
+werkzeug.utils
+clarifai.rest
