@@ -1,10 +1,18 @@
+import exifread, requests, json, os
 from flask import Flask, request, render_template
 from werkzeug.utils import secure_filename
-import exifread, requests, json, os
+from clarifai.rest import ClarifaiApp
+from clarifai.rest import Image as ClImage
+
+# clarifai = ClarifaiApp(api_key='YOUR_API_KEY')
+clarifai = ClarifaiApp(api_key='8b451297ae194246ab5c3ba2933eb6c9')
+clarifai_model = clarifai.models.get('general-v1.3')
 
 # For later use
 # ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+
 UPLOAD_FOLDER = './uploads'
+clarifai_tags = []
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -20,14 +28,20 @@ def imageUpload():
         name = secure_filename(f.filename)
         f.save(os.path.join(app.config['UPLOAD_FOLDER'], name))
 
-        # Open image to get EXIF Meta Data
+        # ClarifAI
+        clarifai_image = ClImage(file_obj=open(os.path.join(app.config['UPLOAD_FOLDER'], name), 'rb'))
+        clarifai_prediction = clarifai_model.predict([clarifai_image])
+        clarifai_data = clarifai_prediction['outputs'][0]['data']['concepts']
+
+        for tags in clarifai_data:
+            clarifai_tags.append(tags['name'].title())
+
+        # EXIF Meta Data
         open_image = open(os.path.join(app.config['UPLOAD_FOLDER'], name), 'rb')
         exif_tags = exifread.process_file(open_image)
 
         for tag in exif_tags.keys():
             if tag not in ('JPEGThumbnail', 'TIFFThumbnail', 'Filename', 'EXIF MakerNote'):
-                # print "Key: %s || Value: %s" % (tag, exif_tags[tag])
-
                 camera_make = str(exif_tags['Image Make'])
                 camera_model = str(exif_tags['Image Model'])
                 lens_make = str(exif_tags['EXIF LensMake'])
