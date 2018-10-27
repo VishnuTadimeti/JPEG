@@ -1,6 +1,6 @@
 # JPEG
 
-Upload an image to get detailed insights about an image, everything from shutterspeed, aperture, iso, exposure, to the time it was taken. It uses ClarifAI to understand the image and suggest camera settings according to the subject and other parameters.
+Upload an image to get detailed insights about an image, everything from shutterspeed, aperture, iso, exposure, to the time it was taken. It uses ClarifAI to understand the image and uses my algorithm to suggest the best camera settings according to the subject and other parameters. More features to come! 
 
 # Setup
 1) `pip install -r requirements.txt`
