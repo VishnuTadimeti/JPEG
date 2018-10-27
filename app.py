@@ -4,8 +4,7 @@ from werkzeug.utils import secure_filename
 from clarifai.rest import ClarifaiApp
 from clarifai.rest import Image as ClImage
 
-# clarifai = ClarifaiApp(api_key='YOUR_API_KEY')
-clarifai = ClarifaiApp(api_key='8b451297ae194246ab5c3ba2933eb6c9')
+clarifai = ClarifaiApp(api_key='YOUR_API_KEY')
 clarifai_model = clarifai.models.get('general-v1.3')
 
 # For later use
@@ -35,6 +34,7 @@ def imageUpload():
 
         for tags in clarifai_data:
             clarifai_tags.append(tags['name'].title())
+        print "Tags: " + clarifai_tags
 
         # EXIF Meta Data
         open_image = open(os.path.join(app.config['UPLOAD_FOLDER'], name), 'rb')
