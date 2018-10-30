@@ -3,8 +3,9 @@ from flask import Flask, request, render_template
 from werkzeug.utils import secure_filename
 from clarifai.rest import ClarifaiApp
 from clarifai.rest import Image as ClImage
+import matplotlib.pyplot as matplot
 
-clarifai = ClarifaiApp(api_key='YOUR_KEY_HERE')
+clarifai = ClarifaiApp(api_key='8b451297ae194246ab5c3ba2933eb6c9')
 clarifai_model = clarifai.models.get('general-v1.3')
 
 # For later use
@@ -38,6 +39,9 @@ def imageUpload():
             clarifai_tags.append(tags['name'].title())
 
         print "Tags: " + str(clarifai_tags)
+
+        # MatPlotLib - Generate Histogram
+        matplot_image = matplot.imread(image_path)
 
         # EXIF Meta Data
         open_image = open(image_path, 'rb')
