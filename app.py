@@ -5,7 +5,7 @@ from clarifai.rest import ClarifaiApp
 from clarifai.rest import Image as ClImage
 import matplotlib.pyplot as matplot
 
-clarifai = ClarifaiApp(api_key='8b451297ae194246ab5c3ba2933eb6c9')
+clarifai = ClarifaiApp(api_key='YOUR_KEY_HERE')
 clarifai_model = clarifai.models.get('general-v1.3')
 
 # For later use
