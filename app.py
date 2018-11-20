@@ -45,11 +45,11 @@ def imageUpload():
 
         # EXIF Meta Data
         open_image = open(image_path, 'rb')
-        exif_tags = exifread.process_file(open_image)
+        exif = exifread.process_file(open_image)
 
         try:
-            for tag in exif_tags.keys():
-                if tag not in ('JPEGThumbnail', 'TIFFThumbnail', 'Filename', 'EXIF MakerNote'):
+            for exif_tags in exif.keys():
+                if exif_tags not in ('JPEGThumbnail', 'TIFFThumbnail', 'Filename', 'EXIF MakerNote'):
                     camera_make = str(exif_tags['Image Make'])
                     camera_model = str(exif_tags['Image Model'])
                     lens_make = str(exif_tags['EXIF LensMake'])
@@ -72,7 +72,26 @@ def imageUpload():
         except:
             print "Something is missing"
 
-    return render_template('image.html', image_path = name, tags = clarifai_tags)
+    return render_template('image.html', image_path = name, 
+    tags = clarifai_tags, 
+    camera_make = camera_make, 
+    camera_model = camera_model, 
+    lens_make = lens_make,
+    lens_model = lens_model,
+    image_time = image_time,
+    image_software = image_software,
+    image_aperture = image_aperture,
+    image_shutterspeed = image_shutterspeed,
+    image_iso_speed = image_iso_speed,
+    image_brightness = image_brightness,
+    image_focal_length = image_focal_length,
+    image_f_stop = image_f_stop,
+    image_white_balance = image_white_balance,
+    image_color_space = image_color_space,
+    image_orientation = image_orientation,
+    image_exposure_bias = image_exposure_bias,
+    image_exposure_time = image_exposure_time,
+    image_exposure_mode = image_exposure_mode)
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1', debug=True)
