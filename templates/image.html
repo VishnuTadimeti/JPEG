@@ -26,6 +26,7 @@
             <div class="page-header-image" data-parallax="true" style="background-image:url(/static/img/2.jpg)">
             </div>
         </div>
+
         <div class="section">
             <div class="container">
                 <div class="row">
@@ -44,6 +45,9 @@
                             <small>{% for items in tags %} {{ items }}, {% endfor %}</small>
                         </p>
                     </div>
+                {% if no_image == True %}
+                    <h3>{{ message }}</h3>
+                {% else %}
                     <div class="col-md-6 ml-auto mr-auto">
                         <h2 class="title"> Camera Make: {{camera_make}}</h2>
                         <h5 class="category">Camera Model: {{camera_model}}</h5>
@@ -97,6 +101,7 @@
                             </div>
                         </div>
                     </div>
+                {% endif %}
                 </div>
             </div>
         </div>

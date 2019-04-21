@@ -5,8 +5,8 @@ from clarifai.rest import ClarifaiApp
 from clarifai.rest import Image as ClImage
 import matplotlib.pyplot as matplot
 
-clarifai = ClarifaiApp(api_key='YOUR_KEY_HERE')
-clarifai_model = clarifai.models.get('general-v1.3')
+# clarifai = ClarifaiApp(api_key='YOUR_KEY_HERE')
+# clarifai_model = clarifai.models.get('general-v1.3')
 
 # For later use
 # ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
@@ -28,20 +28,18 @@ def imageUpload():
         name = secure_filename(f.filename)
         f.save(os.path.join(app.config['UPLOAD_FOLDER'], name))
         image_path = os.path.join(app.config['UPLOAD_FOLDER'], name)
-        print "Image Path: " + str(image_path)
+        print ("Image Path: ", str(image_path))
 
         # ClarifAI
-        clarifai_image = ClImage(file_obj=open(image_path, 'rb'))
-        clarifai_prediction = clarifai_model.predict([clarifai_image])
-        clarifai_data = clarifai_prediction['outputs'][0]['data']['concepts']
-
-        for tags in clarifai_data:
-            clarifai_tags.append(tags['name'].title())
-
-        print "Tags: " + str(clarifai_tags)
+        # clarifai_image = ClImage(file_obj=open(image_path, 'rb'))
+        # clarifai_prediction = clarifai_model.predict([clarifai_image])
+        # clarifai_data = clarifai_prediction['outputs'][0]['data']['concepts']
+        # for tags in clarifai_data:
+        #     clarifai_tags.append(tags['name'].title())
+        # print ("Tags: ", str(clarifai_tags))
 
         # MatPlotLib - Generate Histogram
-        matplot_image = matplot.imread(image_path)
+        # matplot_image = matplot.imread(image_path)
 
         # EXIF Meta Data
         open_image = open(image_path, 'rb')
@@ -68,30 +66,30 @@ def imageUpload():
                     image_exposure_bias = str(exif_tags['EXIF ExposureBiasValue'])
                     image_exposure_time = str(exif_tags['EXIF ExposureTime'])
                     image_exposure_mode = str(exif_tags['EXIF ExposureMode'])
-            print "Found everthing needed"
+                    return render_template('image.html', no_image=False, image_path=name,
+                                           tags=clarifai_tags,
+                                           camera_make=camera_make,
+                                           camera_model=camera_model,
+                                           lens_make=lens_make,
+                                           lens_model=lens_model,
+                                           image_time=image_time,
+                                           image_software=image_software,
+                                           image_aperture=image_aperture,
+                                           image_shutterspeed=image_shutterspeed,
+                                           image_iso_speed=image_iso_speed,
+                                           image_brightness=image_brightness,
+                                           image_focal_length=image_focal_length,
+                                           image_f_stop=image_f_stop,
+                                           image_white_balance=image_white_balance,
+                                           image_color_space=image_color_space,
+                                           image_orientation=image_orientation,
+                                           image_exposure_bias=image_exposure_bias,
+                                           image_exposure_time=image_exposure_time,
+                                           image_exposure_mode=image_exposure_mode)
+            print ("Found everything needed")
         except:
-            print "Something is missing"
-
-    return render_template('image.html', image_path = name, 
-    tags = clarifai_tags, 
-    camera_make = camera_make, 
-    camera_model = camera_model, 
-    lens_make = lens_make,
-    lens_model = lens_model,
-    image_time = image_time,
-    image_software = image_software,
-    image_aperture = image_aperture,
-    image_shutterspeed = image_shutterspeed,
-    image_iso_speed = image_iso_speed,
-    image_brightness = image_brightness,
-    image_focal_length = image_focal_length,
-    image_f_stop = image_f_stop,
-    image_white_balance = image_white_balance,
-    image_color_space = image_color_space,
-    image_orientation = image_orientation,
-    image_exposure_bias = image_exposure_bias,
-    image_exposure_time = image_exposure_time,
-    image_exposure_mode = image_exposure_mode)
+            print ("Something is missing")
+            return render_template('image.html', no_image=True, message="Something is missing", image_path=name)
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1', debug=True)
