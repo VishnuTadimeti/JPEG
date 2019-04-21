@@ -5,8 +5,8 @@ from clarifai.rest import ClarifaiApp
 from clarifai.rest import Image as ClImage
 import matplotlib.pyplot as matplot
 
-# clarifai = ClarifaiApp(api_key='YOUR_KEY_HERE')
-# clarifai_model = clarifai.models.get('general-v1.3')
+clarifai = ClarifaiApp(api_key='YOUR_KEY_HERE')
+clarifai_model = clarifai.models.get('general-v1.3')
 
 # For later use
 # ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
@@ -31,12 +31,12 @@ def imageUpload():
         print ("Image Path: ", str(image_path))
 
         # ClarifAI
-        # clarifai_image = ClImage(file_obj=open(image_path, 'rb'))
-        # clarifai_prediction = clarifai_model.predict([clarifai_image])
-        # clarifai_data = clarifai_prediction['outputs'][0]['data']['concepts']
-        # for tags in clarifai_data:
-        #     clarifai_tags.append(tags['name'].title())
-        # print ("Tags: ", str(clarifai_tags))
+        clarifai_image = ClImage(file_obj=open(image_path, 'rb'))
+        clarifai_prediction = clarifai_model.predict([clarifai_image])
+        clarifai_data = clarifai_prediction['outputs'][0]['data']['concepts']
+        for tags in clarifai_data:
+            clarifai_tags.append(tags['name'].title())
+        print ("Tags: ", str(clarifai_tags))
 
         # MatPlotLib - Generate Histogram
         # matplot_image = matplot.imread(image_path)
@@ -44,6 +44,7 @@ def imageUpload():
         # EXIF Meta Data
         open_image = open(image_path, 'rb')
         exif = exifread.process_file(open_image)
+        print ("EXIF: ", exif)
 
         try:
             for exif_tags in exif.keys():
@@ -89,7 +90,7 @@ def imageUpload():
             print ("Found everything needed")
         except:
             print ("Something is missing")
-            return render_template('image.html', no_image=True, message="Something is missing", image_path=name)
+            return render_template('image.html', no_image=True, message="Something is missing", tags=clarifai_tags, image_path=name)
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1', debug=True)
